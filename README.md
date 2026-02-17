@@ -44,10 +44,10 @@ I am lazy again and spend ~95% of time on YouTube and random browsing
 
 To install **Spotlight Web** on Windows:
 
-1.  Go to the [Releases](https://github.com/Ashwin-1709/spotlight-web/releases) page (if hosted on GitHub).
+1.  Go to the [Releases](https://github.com/Ashwin-1709/spotlight-web/releases) page.
 2.  Download the latest `Spotlight Web_x.x.x_x64-setup.exe` or `.msi` file.
 3.  Run the installer and follow the prompts.
-4.  Once installed, you can launch it from your Start menu.
+4.  Once installed, you can launch it from your Start menu or configure it to always launch when you bootup.
 
 ## Development
 
