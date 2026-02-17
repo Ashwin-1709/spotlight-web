@@ -1,14 +1,9 @@
-// ============================================
-// SPOTLIGHT WEB — Main Application Logic
-// ============================================
-
 const { invoke } = window.__TAURI__.core;
 const { listen } = window.__TAURI__.event;
 const { Window } = window.__TAURI__.window;
 
 const appWindow = Window.getCurrent();
 
-// --- Bang Command Definitions ---
 const SEARCH_ENGINES = {
     g: {
         name: "Google", url: "https://www.google.com/search?q=", homepage: "https://www.google.com",
@@ -23,7 +18,6 @@ const SEARCH_ENGINES = {
 
 const DEFAULT_ENGINE = "https://www.google.com/search?q=";
 
-// --- DOM Elements ---
 const searchInput = document.getElementById("searchInput");
 const resultsList = document.getElementById("resultsList");
 const resultsContainer = document.getElementById("resultsContainer");
@@ -33,17 +27,22 @@ let selectedIndex = -1;
 let suggestions = [];
 let debounceTimer = null;
 
-// --- Window Sizing Constants ---
 // Need to account for the search bar height (~60px) + content
 const SEARCH_BAR_HEIGHT = 68; // Height with padding/border + safety buffer
 const MAX_WINDOW_HEIGHT = 500;
 
-// --- Helper for Terminal Logging ---
+/**
+ * Logs a message to the terminal via the Tauri backend.
+ * @param {any} msg - The message to log.
+ */
 function log(msg) {
     invoke("log_to_terminal", { message: String(msg) }).catch(console.error);
 }
 
-// --- Resize Window Logic ---
+/**
+ * Adjusts the application window size based on whether suggestions are being displayed.
+ * @param {boolean} hasSuggestions - True if suggestions are visible, false otherwise.
+ */
 async function adjustWindowSize(hasSuggestions) {
     // If no suggestions, we only show the search bar
     if (!hasSuggestions) {
@@ -67,14 +66,22 @@ async function adjustWindowSize(hasSuggestions) {
     }
 }
 
-// --- URL Detection ---
+/**
+ * Checks if the given input string resembles a URL.
+ * @param {string} input - The string to check.
+ * @returns {boolean} True if it looks like a URL, false otherwise.
+ */
 function isLikelyURL(input) {
     if (input.includes(".") && !input.includes(" ")) return true;
     if (input.startsWith("http://") || input.startsWith("https://")) return true;
     return false;
 }
 
-// --- Parse Input ---
+/**
+ * Parses user input to determine the type of action (URL, Bang, or Search).
+ * @param {string} input - The raw user input.
+ * @returns {Object|null} An object containing the action type and details, or null if input is empty.
+ */
 function parseInput(input) {
     const trimmed = input.trim();
     if (!trimmed) return null;
@@ -121,7 +128,10 @@ function parseInput(input) {
     };
 }
 
-// --- Execute Action ---
+/**
+ * Executes an action by opening a URL in the browser and hiding the application window.
+ * @param {string} url - The URL to open.
+ */
 async function executeAction(url) {
     try {
         await invoke("open_browser", { url });
@@ -140,7 +150,10 @@ function resetSearch() {
     adjustWindowSize(false);
 }
 
-// --- Render Suggestions ---
+/**
+ * Renders the provided suggestion items into the results list.
+ * @param {Array} items - The list of suggestion objects to render.
+ */
 function renderSuggestions(items) {
     suggestions = items;
     selectedIndex = -1;
@@ -175,6 +188,10 @@ function renderSuggestions(items) {
     adjustWindowSize(true);
 }
 
+/**
+ * Sets the selected state for a suggestion item at the specified index.
+ * @param {number} index - The index of the item to select.
+ */
 function setSelected(index) {
     const items = resultsList.querySelectorAll(".result-item");
     items.forEach((el, i) => {
@@ -187,7 +204,10 @@ function setSelected(index) {
     }
 }
 
-// --- Google Auto-Suggest ---
+/**
+ * Fetches search suggestions from Google and updates the UI.
+ * @param {string} query - The search query string.
+ */
 async function fetchSuggestions(query) {
     const parsed_query = parseInput(query);
     const default_suggestions = [
@@ -254,7 +274,11 @@ async function fetchSuggestions(query) {
     }
 }
 
-// --- HTML Escape ---
+/**
+ * Escapes HTML special characters in a string to prevent XSS.
+ * @param {string} text - The text to escape.
+ * @returns {string} The escaped HTML string.
+ */
 function escapeHtml(text) {
     const div = document.createElement("div");
     div.textContent = text;
@@ -306,7 +330,6 @@ searchInput.addEventListener("keydown", (e) => {
     }
 });
 
-// --- Mouse Drag Handler ---
 document.addEventListener('mousedown', (e) => {
     // Check if the target is interactive (or inside an interactive element)
     const target = e.target;
@@ -319,7 +342,10 @@ document.addEventListener('mousedown', (e) => {
     }
 });
 
-// --- Update UI based on Input ---
+/**
+ * Updates the search icon UI based on the type of input detected.
+ * @param {string} value - The current search input value.
+ */
 function updateUI(value) {
     const parsed = parseInput(value);
     const iconEl = document.querySelector(".search-icon");
@@ -333,7 +359,7 @@ function updateUI(value) {
     }
 }
 
-// --- Input Handler with Debounce ---
+/** Input handler with debounce */
 searchInput.addEventListener("input", () => {
     clearTimeout(debounceTimer);
     const value = searchInput.value.trim();
@@ -350,7 +376,7 @@ searchInput.addEventListener("input", () => {
     }, 150);
 });
 
-// --- Listen for focus event from Rust backend ---
+/** Listen for focus event from Rust backend */
 listen("focus-input", () => {
     searchInput.focus();
     searchInput.select();
@@ -360,8 +386,7 @@ listen("focus-input", () => {
     }
 });
 
-
-// --- Initial focus ---
+/** Initial focus */
 searchInput.focus();
-// Set initial size
+/** Set initial size */
 adjustWindowSize(false);

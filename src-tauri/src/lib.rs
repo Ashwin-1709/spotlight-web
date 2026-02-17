@@ -3,11 +3,19 @@ use tauri::{Emitter, Manager};
 use tauri_plugin_global_shortcut::{Code, GlobalShortcutExt, Modifiers, Shortcut, ShortcutState};
 use urlencoding::encode;
 
+/// Opens a URL in the user's default web browser.
+///
+/// # Arguments
+/// * `url` - The URL to open.
 #[tauri::command]
 fn open_browser(url: String) -> Result<(), String> {
     open::that(&url).map_err(|e| format!("Failed to open URL: {}", e))
 }
 
+/// Hides the current application window.
+///
+/// # Arguments
+/// * `window` - The window instance to hide.
 #[tauri::command]
 fn hide_window(window: tauri::Window) -> Result<(), String> {
     window
@@ -15,11 +23,19 @@ fn hide_window(window: tauri::Window) -> Result<(), String> {
         .map_err(|e| format!("Failed to hide window: {}", e))
 }
 
+/// Logs a message from the JavaScript side to the Rust terminal.
+///
+/// # Arguments
+/// * `message` - The message to be printed.
 #[tauri::command]
 fn log_to_terminal(message: String) {
     println!("[JS]: {}", message);
 }
 
+/// Fetches search suggestions from Google based on the provided query.
+///
+/// # Arguments
+/// * `query` - The search string for which to get suggestions.
 #[tauri::command]
 async fn get_suggestions(query: String) -> Result<Value, String> {
     // Step 1: Build the URL with encoded query
