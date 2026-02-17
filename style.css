@@ -1,0 +1,249 @@
+:root {
+  --bg-glass: rgba(22, 22, 24, 0.9);
+  /* Semi-transparent macOS style */
+  --bg-glass-border: rgba(255, 255, 255, 0.12);
+  --bg-hover: rgba(255, 255, 255, 0.1);
+  --bg-selected: #007aff;
+  /* macOS Blue */
+  --text-primary: rgba(255, 255, 255, 0.95);
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --text-placeholder: rgba(255, 255, 255, 0.3);
+  --accent: #007aff;
+  --divider: rgba(255, 255, 255, 0.1);
+  --shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 20px 40px rgba(0, 0, 0, 0.6);
+  --radius: 12px;
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ... reset ... */
+
+/* ---- Main Container ---- */
+.spotlight-container {
+  width: 680px;
+  max-height: 480px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(50px);
+  /* Heavy blur behind */
+  -webkit-backdrop-filter: blur(50px);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* Snappier */
+}
+
+/* ... search bar ... */
+
+.shortcut-hint {
+  display: none;
+  /* Hidden as requested */
+}
+
+/* ---- Reset ---- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  font-family: var(--font);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  padding-top: 0;
+}
+
+/* ---- Main Container ---- */
+.spotlight-container {
+  width: 100%;
+  /* Use full width of window, let window control size */
+  background: var(--bg-glass);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid var(--bg-glass-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* animation: spotlight-in 0.15s ease-out; Remove animation for now to avoid resizing glitches */
+}
+
+/* ---- Search Bar ---- */
+.search-bar {
+  display: flex;
+  align-items: center;
+  padding: 14px 18px;
+  gap: 12px;
+  border-bottom: 1px solid var(--divider);
+  /* -webkit-app-region: drag;  <-- REMOVED: Managed by data-tauri-drag-region in HTML */
+}
+
+.search-icon {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--text-primary);
+  font-family: var(--font);
+  letter-spacing: -0.01em;
+  -webkit-app-region: no-drag;
+}
+
+.search-input::placeholder {
+  color: var(--text-placeholder);
+  font-weight: 300;
+}
+
+.shortcut-hint {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-secondary);
+  font-size: 11px;
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+.shortcut-hint kbd {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: var(--font);
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+.shortcut-hint span {
+  margin: 0 1px;
+}
+
+/* ---- Results Container ---- */
+.results-container {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.results-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+.results-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.results-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.results-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.results-list:empty {
+  display: none;
+}
+
+/* ---- Result Item ---- */
+.result-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  gap: 12px;
+  transition: background 0.1s ease;
+}
+
+.result-item:hover {
+  background: var(--bg-hover);
+}
+
+.result-item.selected {
+  background: var(--bg-selected);
+}
+
+.result-item-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 14px;
+}
+
+.result-item-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.result-item-title {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.result-item-subtitle {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.result-item-action {
+  font-size: 11px;
+  color: var(--text-secondary);
+  opacity: 0;
+  transition: opacity 0.1s;
+  flex-shrink: 0;
+}
+
+.result-item:hover .result-item-action,
+.result-item.selected .result-item-action {
+  opacity: 1;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
+}
