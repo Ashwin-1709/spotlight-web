@@ -38,7 +38,7 @@ Firing quick queries on macOS is extremely convenient, and I wanted to bring tha
 
 ## Why only YouTube, GitHub, and Google as Bangs?
 
-I am lazy again and spend ~95% of time on YouTube and random browsing.ust hold
+I am lazy again and spend ~95% of time on YouTube and random browsing
 
 ## Installation
 
