@@ -20,11 +20,11 @@ Designed for speed. Use global shortcuts to toggle instantly without losing your
 
 ## Demo
 
-| Home | Normal Search |
+| Home | Google Search |
 | :---: | :---: |
 | <img src="src-tauri/demo/home.png" width="500" alt="Home" /> | <img src="src-tauri/demo/normal.png" width="500" alt="Normal Search" /> |
 
-| Google Search | YouTube Search |
+| Normal Search | YouTube Search |
 | :---: | :---: |
 | <img src="src-tauri/demo/website.png" width="500" alt="Google Search" /> | <img src="src-tauri/demo/youtube.png" width="500" alt="YouTube Search" /> |
 
