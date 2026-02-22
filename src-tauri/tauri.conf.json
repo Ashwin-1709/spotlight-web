@@ -1,7 +1,7 @@
 {
     "$schema": "https://raw.githubusercontent.com/nicegui/dev/master/tauri/tauri.conf.json",
     "productName": "Spotlight Web",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "identifier": "com.spotlight-web.app",
     "build": {
         "frontendDist": "../dist",
