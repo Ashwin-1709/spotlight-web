@@ -2,9 +2,9 @@
 
 A minimal, fast, web-based tool effectively bringing a **macOS-like Spotlight search experience to Windows**, built with Tauri.
 
-## Super Fast & Efficient
+## Efficient
 
-Designed for speed. Use global shortcuts to toggle instantly without losing your context.
+Use global shortcuts to toggle instantly without losing your context.
 
 ### Key Shortcuts
 -   **`Alt + Space`**: Open / Minimize (Saves your current search progress).
